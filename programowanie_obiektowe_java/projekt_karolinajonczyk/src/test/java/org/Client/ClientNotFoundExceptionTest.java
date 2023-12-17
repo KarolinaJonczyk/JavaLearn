@@ -7,7 +7,7 @@ class ClientNotFoundExceptionTest {
     //test sprawdza, czy konstruktor klasy  ClientNotFoundExceptionpoprawnie
     // pooprawnie ustawia przekazany komunikat błędu.
     @Test
-    void TestErrorMessage() {
+    void shouldSetErrorMessageInConstructor() {
         String errorMessage = "Client not found!";
         ClientNotFoundException exception = new ClientNotFoundException(errorMessage);
 
@@ -17,7 +17,7 @@ class ClientNotFoundExceptionTest {
     // test spawdza czy konstrutor klasy ClientNotFoundException ustawia domyślny komunikat,
 // gdy dostarczony komunikat jest pusty (jest długości zero).
     @Test
-    void TestEmptyMessage() {
+    void shouldSetDefaultMessageForEmptyMessage() {
         ClientNotFoundException exception = new ClientNotFoundException("");
 
         assertNotNull(exception.getMessage());
@@ -26,7 +26,7 @@ class ClientNotFoundExceptionTest {
 // test spawdza czy konstrutor klasy ClientnotFoundException ustawia domyślny komunikat,
 // gdy dostarczony komunikat jest null.
     @Test
-    void TestNullMessage() {
+    void shouldSetDefaultMessageForNullMessage() {
         ClientNotFoundException exception = new ClientNotFoundException(null);
 
         assertNotNull(exception.getMessage());

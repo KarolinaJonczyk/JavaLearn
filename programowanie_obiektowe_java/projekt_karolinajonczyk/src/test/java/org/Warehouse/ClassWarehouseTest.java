@@ -15,7 +15,7 @@ class ClassWarehouseTest {
         warehouse = new ClassWarehouse(clients);
     }
     @Test
-    void addMetalIngot() throws ClientNotFoundException, ProhibitedMetalTypeException, FullWarehouseException {
+    void shouldAddMetalIngot() throws ClientNotFoundException, ProhibitedMetalTypeException, FullWarehouseException {
         String clientId = clients.createNewClient("Paul", "McCartney");
         SupportedMetalType metalType = SupportedMetalType.COPPER;
         warehouse.addMetalIngot(clientId, metalType, 50);
@@ -24,12 +24,12 @@ class ClassWarehouseTest {
     }
 
     @Test
-    void addMetalIngotThrowsClientNotFoundException() {
+    void shouldThrowClientNotFoundExceptionWhenAddingMetalIngot() {
         assertThrows(ClientNotFoundException.class, () -> warehouse.addMetalIngot("nonexistentClient", SupportedMetalType.COPPER, 30));
     }
 
     @Test
-    void addMetalIngotThrowsFullWarehouseException() throws ClientNotFoundException, ProhibitedMetalTypeException, FullWarehouseException {
+    void shouldThrowFullWarehouseExceptionWhenAddingMetalIngot() throws ClientNotFoundException, ProhibitedMetalTypeException, FullWarehouseException {
         String clientId = clients.createNewClient("Keith", "Richards");
 
         for (int i = 0; i < 3; i++) {
@@ -38,7 +38,7 @@ class ClassWarehouseTest {
         assertThrows(FullWarehouseException.class, () -> warehouse.addMetalIngot(clientId, SupportedMetalType.COPPER, 1000));
     }
     @Test
-    void getMetalTypesToMassStoredByClient() throws ClientNotFoundException, ProhibitedMetalTypeException, FullWarehouseException {
+    void shouldGetMetalTypesToMassStoredByClient() throws ClientNotFoundException, ProhibitedMetalTypeException, FullWarehouseException {
         String clientId = clients.createNewClient("Jimmy", "Page");
         SupportedMetalType metalTYpe = SupportedMetalType.IRON;
         warehouse.addMetalIngot(clientId, metalTYpe, 88);
@@ -48,7 +48,7 @@ class ClassWarehouseTest {
     }
 
     @Test
-    void getTotalVolumeOccupiedByClient() throws ClientNotFoundException, ProhibitedMetalTypeException, FullWarehouseException {
+    void shouldGetTotalVolumeOccupiedByClient() throws ClientNotFoundException, ProhibitedMetalTypeException, FullWarehouseException {
         String clientId = clients.createNewClient("Alex", "Kapranos");
         SupportedMetalType metalTypeA = SupportedMetalType.COPPER;
         SupportedMetalType metalTypeB = SupportedMetalType.GOLD;
@@ -57,13 +57,13 @@ class ClassWarehouseTest {
         assertEquals(770, warehouse.getTotalVolumeOccupiedByClient(clientId));
     }
     @Test
-    void getTotalVolumeOccupiedByClientWithoutStoredMetal() throws ClientNotFoundException {
+    void  shouldGetTotalVolumeOccupiedByClientWithoutStoredMetal() throws ClientNotFoundException {
         String clientId = clients.createNewClient("Carlos", "Santana");
         assertEquals(0, warehouse.getTotalVolumeOccupiedByClient(clientId));
     }
 
     @Test
-    void getStoredMetalTypesByClient() throws ClientNotFoundException, ProhibitedMetalTypeException, FullWarehouseException {
+    void shouldGetStoredMetalTypesByClient() throws ClientNotFoundException, ProhibitedMetalTypeException, FullWarehouseException {
         String clientId = clients.createNewClient("Tommy", "Emmanuel");
         SupportedMetalType metalTypeA = SupportedMetalType.COPPER;
         SupportedMetalType metalTypeB = SupportedMetalType.SILVER;

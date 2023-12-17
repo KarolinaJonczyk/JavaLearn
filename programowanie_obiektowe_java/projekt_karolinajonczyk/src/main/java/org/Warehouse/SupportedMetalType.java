@@ -10,12 +10,14 @@ public enum SupportedMetalType {
     GOLD(19300),
     PLATINUM(21500);
 
-    private int density;
+    private final int density;
 
     SupportedMetalType(int density) {
+        if (density <= 0) {
+            throw new IllegalArgumentException("Density must be a positive value");
+        }
         this.density = density;
     }
-
     /**
      * @return Metal density kg/m^3.
      */

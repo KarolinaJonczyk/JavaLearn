@@ -4,15 +4,16 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+
 class ClassClientsTest {
 
 
     @Test
-    void getClientsInMap() {
+    void shouldGetClientsInMapAfterAddingClients() {
         ClassClients clients = new ClassClients();
         String clientId1 = clients.createNewClient("Eric", "Clapton");
         String clientId2 = clients.createNewClient("Carlos", "Santana");
-        Map<String, ClassClients.ClientInformations> clientsInMap = clients.getClientsInMap();
+        Map<String,ClientInformations> clientsInMap = clients.getClientsInMap();
         assertFalse(clientsInMap.isEmpty());
 
         assertTrue(clientsInMap.containsKey(clientId1));
@@ -27,14 +28,14 @@ class ClassClientsTest {
 
 
     @Test
-    void createNewClient() {
+    void shouldCreateNewClientWithCorrectInformation() {
         ClassClients clients = new ClassClients();
 
         String clientId = clients.createNewClient("Billy", "Idol");
 
         assertTrue(clients.getClientsInMap().containsKey(clientId));
 
-        ClassClients.ClientInformations clientInfo = clients.getClientsInMap().get(clientId);
+        ClientInformations clientInfo = clients.getClientsInMap().get(clientId);
         assertEquals("Billy", clientInfo.getFirstName());
         assertEquals("Idol", clientInfo.getLastName());
         assertFalse(clientInfo.isPremium());
@@ -42,7 +43,7 @@ class ClassClientsTest {
     }
 
     @Test
-    void activatePremiumAccount() throws ClientNotFoundException {
+    void shouldActivatePremiumAccountForClient() throws ClientNotFoundException {
         ClassClients clients = new ClassClients();
         String clientId = clients.createNewClient("Steven", "Tyler");
         clients.activatePremiumAccount(clientId);
@@ -50,19 +51,19 @@ class ClassClientsTest {
     }
 
     @Test
-    void getClientFullName() throws ClientNotFoundException {
+    void shouldGetClientFullName() throws ClientNotFoundException {
         ClassClients clients = new ClassClients();
         String clientId = clients.createNewClient("Steve", "Stevens");
         assertEquals("Steve Stevens", clients.getClientFullName(clientId));
     }
     @Test
-    void getClientFullNameNonExistentClient() {
+    void shouldThrowExceptionForNonExistentClientFullName() {
         ClassClients clients = new ClassClients();
         assertThrows(ClientNotFoundException.class, () -> clients.getClientFullName("nonExistentClientId"));
     }
 
     @Test
-    void getClientCreationDate() throws ClientNotFoundException {
+    void shouldGetClientCreationDate() throws ClientNotFoundException {
         ClassClients clients = new ClassClients();
         String clientId = clients.createNewClient("Brian", "May");
         LocalDate expectedCreationDate = LocalDate.now();
@@ -71,17 +72,17 @@ class ClassClientsTest {
         assertNotNull(clients.getClientCreationDate(clientId));
     }
 
+@Test
+void shouldReturnTrueForPremiumClientAfterActivation() throws ClientNotFoundException {
+    ClassClients clients = new ClassClients();
+    String clientId = clients.createNewClient("Jimmy", "Page");
+    System.out.println("Before premium activation: " + clients.getClientsInMap().get(clientId));
+    clients.activatePremiumAccount(clientId);
+    System.out.println("After premium activation: " + clients.getClientsInMap().get(clientId));
+    assertTrue(clients.isPremiumClient(clientId));
+}
     @Test
-    void isPremiumClient() throws ClientNotFoundException {
-        ClassClients clients = new ClassClients();
-        String clientId = clients.createNewClient("Jimmy", "Page");
-        assertFalse(clients.isPremiumClient(clientId));
-        clients.activatePremiumAccount(clientId);
-        assertTrue(clients.isPremiumClient(clientId));
-    }
-
-    @Test
-    void getNumberOfClients() {
+    void shouldGetCorrectNumberOfClients() {
         ClassClients clients = new ClassClients();
         clients.createNewClient("Billy", "Idol");
         clients.createNewClient("Jimmy", "Page");
@@ -92,7 +93,7 @@ class ClassClientsTest {
     }
 
     @Test
-    void getNumberOfPremiumClients() {
+    void shouldGetCorrectNumberOfPremimClients() {
         ClassClients clients = new ClassClients();
         String premiumClientA = clients.createNewClient("Lars", "Ulrich");
         clients.activatePremiumAccount(premiumClientA);

@@ -1,5 +1,4 @@
 package org.Warehouse;
-
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -7,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class SupportedMetalTypeTest {
 
     @Test
-    void getDensity() {
+    void shouldReturnCorrectDensityForMetals() {
         assertEquals(8960, SupportedMetalType.COPPER.getDensity());
         assertEquals(7260, SupportedMetalType.TIN.getDensity());
         assertEquals(7870, SupportedMetalType.IRON.getDensity());
@@ -20,7 +19,7 @@ class SupportedMetalTypeTest {
 
 
     @Test
-    void values() {
+    void shouldReturnArrayOfSupportedMetalTypes() {
         SupportedMetalType[] values = SupportedMetalType.values();
         assertEquals(8, values.length);
         assertSame(SupportedMetalType.COPPER, values[0]);
@@ -34,7 +33,7 @@ class SupportedMetalTypeTest {
     }
 
     @Test
-    void valueOf() {
+    void shouldReturnCorrectSupportedMetalTypeForValidName() {
         assertSame(SupportedMetalType.COPPER, SupportedMetalType.valueOf("COPPER"));
         assertSame(SupportedMetalType.TIN, SupportedMetalType.valueOf("TIN"));
         assertSame(SupportedMetalType.IRON, SupportedMetalType.valueOf("IRON"));
@@ -45,4 +44,30 @@ class SupportedMetalTypeTest {
         assertSame(SupportedMetalType.PLATINUM, SupportedMetalType.valueOf("PLATINUM"));
 
     }
+
+    @Test
+    void shouldThrowIllegalArgumentExceptionForWhitespaceMetalName() {
+        assertThrows(IllegalArgumentException.class, () -> SupportedMetalType.valueOf(" "));
+    }
+    @Test
+    void shouldThrowNullPointerExceptionForNullMetalName() {
+        assertThrows(NullPointerException.class, () -> SupportedMetalType.valueOf(null));
+    }
+
+    @Test
+    void shouldThrowIllegalArgumentExceptionForEmptyMetalName() {
+        assertThrows(IllegalArgumentException.class, () -> SupportedMetalType.valueOf(""));
+    }
+    @Test
+    void shouldThrowIllegalArgumentExceptionForInvalidMetalName() {
+        assertThrows(IllegalArgumentException.class, () -> SupportedMetalType.valueOf("RHODIUM"));
+        assertThrows(IllegalArgumentException.class, () -> SupportedMetalType.valueOf("OSMIUM"));
+        assertThrows(IllegalArgumentException.class, () -> SupportedMetalType.valueOf("TELLURIUM"));
+        assertThrows(IllegalArgumentException.class, () -> SupportedMetalType.valueOf("PALLADIUM"));
+
+
+
+    }
+
+
 }

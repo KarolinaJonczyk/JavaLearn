@@ -3,6 +3,7 @@ import java.time.LocalDate;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.UUID;
+//update: kod ma kilka poorawek po konsultacjach: isPremiumClient, testy, dodanie pliku ClientInformations, kosmetyczne poprawki :)
 
 public class ClassClients implements Clients{
 
@@ -33,77 +34,7 @@ public class ClassClients implements Clients{
         return name.substring(0, Math.min(name.length(), 2)).toUpperCase();
     }
 
-    protected static class ClientInformations {
-        private String firstName;
-        private String lastName;
-        private final LocalDate creationDate;
-        private boolean premium;
-        private LocalDate endDate;
-        private int premiumPurchases;
 
-        private PremiumPeriod premiumPeriod;
-
-
-
-        public ClientInformations(String firstName, String lastName, LocalDate creationDate, boolean premium) {
-            this.firstName = firstName;
-            this.lastName = lastName;
-            this.creationDate = creationDate;
-            this.premium = premium;
-        }
-
-        public String getFirstName() {
-            return firstName;
-        }
-
-        public void setFirstName(String firstName) {
-            this.firstName = firstName;
-        }
-
-        public String getLastName() {
-            return lastName;
-        }
-
-        public void setLastName(String lastName) {
-            this.lastName = lastName;
-        }
-
-        public LocalDate getCreationDate() {
-            return creationDate;
-        }
-
-        public boolean isPremium() {
-            return premium;
-        }
-
-        public void setPremium(boolean premium) {
-            this.premium = premium;
-        }
-
-        public void setPremiumEndDate(LocalDate endDate) {
-            this.endDate = endDate;
-        }
-
-        public LocalDate getPremiumEndDate() {
-            return endDate;
-        }
-
-        public int getPremiumPurchases() {
-            return premiumPurchases;
-        }
-
-        public void incrementPremiumPurchases() {
-            premiumPurchases++;
-        }
-        public PremiumPeriod getPremiumPeriod() {
-            return premiumPeriod;
-        }
-
-        public void setPremiumPeriod(PremiumPeriod premiumPeriod) {
-            this.premiumPeriod = premiumPeriod;
-        }
-
-    }
     @Override
     public String activatePremiumAccount(String clientId) throws  ClientNotFoundException{
         if (clientsInMap.containsKey(clientId)) {
@@ -136,13 +67,15 @@ public class ClassClients implements Clients{
         }
     }
 
+
     @Override
-    public boolean isPremiumClient(String clientId) throws ClientNotFoundException{
-        if (clientsInMap.containsKey(clientId)) {
-            return  clientsInMap.get(clientId).isPremium();
-        } else {
+    public boolean isPremiumClient(String clientId) throws ClientNotFoundException {
+        if (!clientsInMap.containsKey(clientId)) {
             throw new ClientNotFoundException("Client not found in base: " + clientId);
         }
+
+        ClientInformations clientInfo = clientsInMap.get(clientId);
+        return clientInfo.isPremium() && (clientInfo.getPremiumEndDate() == null || clientInfo.getPremiumEndDate().isAfter(LocalDate.now()));
     }
 
     @Override
@@ -179,7 +112,7 @@ public class ClassClients implements Clients{
         }
     }
 
-    private void setPremiumPeriod(String clientId, PremiumPeriod premiumPeriod) throws ClientNotFoundException {
+    private void setPremiumPeriod(String clientId, ClientInformations.PremiumPeriod premiumPeriod) throws ClientNotFoundException {
         if (clientsInMap.containsKey(clientId)) {
             ClientInformations clientInfo = clientsInMap.get(clientId);
             switch (premiumPeriod) {
@@ -238,25 +171,15 @@ public class ClassClients implements Clients{
         }
     }
     private int getTotalPremiumPurchases() {
-        //ten kawałek jest dodatkowy do moich dodatkowych prywatnych metod z końca pliku/kodu
+        //ten kawałek jest dodatkowy do moich dodatkowych prywatnych metod z klasy ClientInformations
         int totalPremiumPurchases = 0;
         return totalPremiumPurchases;
     }
     private int getNumberOfUnlimitedPremiumClients() {
         return (int) clientsInMap.values().stream()
                 .filter(ClientInformations::isPremium)
-                .filter(client -> client.getPremiumPeriod() == PremiumPeriod.UNLIMITED)
+                .filter(client -> client.getPremiumPeriod() == ClientInformations.PremiumPeriod.UNLIMITED)
                 .count();
     }
-
-
-    private enum PremiumPeriod {
-        ONE_MONTH,
-        SIX_MONTHS,
-        ONE_YEAR,
-        UNLIMITED
-    }
-
-
 
 }

@@ -4,14 +4,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ProhibitedMetalTypeExceptionTest {
     @Test
-    void TestErrorMessage() {
+    void shouldSetErrorMessageWhenCreatingExceptionWithMessage() {
         String errorMessage = "Prohibited metal type!";
         ProhibitedMetalTypeException exception = new ProhibitedMetalTypeException(errorMessage);
         assertEquals(errorMessage, exception.getMessage());
     }
 
     @Test
-    void TestNullMessage() {
+    void shouldSetNullMessageWhenCreatingExceptionWithNullMessage() {
         ProhibitedMetalTypeException exception = new ProhibitedMetalTypeException(null);
 
         assertNull(exception.getMessage());
@@ -19,7 +19,7 @@ class ProhibitedMetalTypeExceptionTest {
 
 
     @Test
-    void TestEmptyMessage() {
+    void shouldSetEmptyMessageWhenCreatingExceptionWithEmptyMessage() {
         ProhibitedMetalTypeException exception = new ProhibitedMetalTypeException("");
         assertNotNull(exception.getMessage());
         assertTrue(exception.getMessage().isEmpty());

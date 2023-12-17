@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class FullWarehouseExceptionTest {
     @Test
-    void TestErrorMessage() {
+    void shouldSetErrorMessageWhenCreatingException() {
         String errorMessage = "Warehouse is full!";
         FullWarehouseException exception = new FullWarehouseException(errorMessage);
 
@@ -12,7 +12,7 @@ class FullWarehouseExceptionTest {
     }
 
     @Test
-    void TestNullMessage() {
+    void shouldSetDefaultMessageWhenCreatingExceptionWithNullMessage() {
         FullWarehouseException exception = new FullWarehouseException(null);
 
         assertNotNull(exception.getMessage());
@@ -21,7 +21,7 @@ class FullWarehouseExceptionTest {
 
 
     @Test
-    void TestEmptyMessage() {
+    void shouldSetDefaultMessageWhenCreatingExceptionWithEmptyMessage() {
         FullWarehouseException exception = new FullWarehouseException("");
 
         assertNotNull(exception.getMessage());
